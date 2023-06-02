@@ -68,4 +68,5 @@ const reducer = ( state = DEFAULT_STATE, action ) => {
 
 export default undoable( reducer, {
 	groupBy,
+	ignoreInitialState: true,
 } );

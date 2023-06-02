@@ -9,7 +9,7 @@ import isPromise from 'is-promise';
 import { Popover } from '@wordpress/components';
 import { withDispatch, withSelect } from '@wordpress/data';
 import { compose } from '@wordpress/compose';
-import { useEffect } from '@wordpress/element';
+import { useLayoutEffect } from '@wordpress/element';
 import { parse, rawHandler } from '@wordpress/blocks';
 
 /**
@@ -43,8 +43,8 @@ async function getInitialContent( settings, loader ) {
 	const contentLoader = isPromise( loader )
 		? loader
 		: new Promise( ( resolve ) => {
-			resolve( loader ? loader( parse, rawHandler ) : [] );
-		} );
+				resolve( loader ? loader( parse, rawHandler ) : [] );
+		  } );
 
 	return contentLoader.then( ( content ) => {
 		return getInitialEditorContent(
@@ -70,20 +70,23 @@ async function getInitialContent( settings, loader ) {
  * @param {OnMore} props.renderMoreMenu - Callback to render additional items in the more menu
  * @param {OnSelection} props.selection
  * @param {OnLoad} props.onLoad - Load initial blocks
+ * @param {*} props.clearHistory - Callback to clear history
  */
 
 function BlockEditorContents( props ) {
-	const { blocks, onInput, onChange, selection, isEditing, editorMode } = props;
+	const { blocks, onInput, onChange, selection, clearHistory, isEditing, editorMode } = props;
 	const { children, settings, renderMoreMenu, onLoad } = props;
 
 	// Set initial content, if we have any, but only if there is no existing data in the editor (from elsewhere)
-	useEffect( () => {
+	useLayoutEffect( () => {
 		const loadData = async () => {
 			const initialContent = await getInitialContent( settings, onLoad );
 
-			if ( initialContent.length > 0 && ( !blocks || blocks.length === 0 ) ) {
+			if ( initialContent.length > 0 && ( ! blocks || blocks.length === 0 ) ) {
 				onInput( initialContent, { isInitialContent: true } );
 			}
+
+			clearHistory();
 		};
 
 		loadData();
@@ -107,8 +110,9 @@ function BlockEditorContents( props ) {
 				{ children }
 			</BlockEditor>
 
-			{ // @ts-ignore
-				( <Popover.Slot /> )
+			{
+				// @ts-ignore
+				<Popover.Slot />
 			}
 		</BlockEditorProvider>
 	);
@@ -126,7 +130,7 @@ export default compose( [
 		};
 	} ),
 	withDispatch( ( dispatch, ownProps ) => {
-		const { updateBlocksWithUndo, updateBlocksWithoutUndo } = dispatch( 'isolated/editor' );
+		const { updateBlocksWithUndo, updateBlocksWithoutUndo, clearHistory } = dispatch( 'isolated/editor' );
 		const { onInput, onChange } = ownProps;
 
 		return {
@@ -138,6 +142,7 @@ export default compose( [
 				onInput?.( ...args );
 				updateBlocksWithoutUndo( ...args );
 			},
+			clearHistory,
 		};
 	} ),
 ] )( BlockEditorContents );
