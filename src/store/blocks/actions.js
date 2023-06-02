@@ -10,8 +10,8 @@ const actions = {
 	*redo() {
 		return yield ActionCreators.redo();
 	},
-	clearHistory() {
-		return ActionCreators.clearHistory();
+	*clearHistory() {
+		return yield ActionCreators.clearHistory();
 	},
 	/**
 	 * Update blocks without undo history
