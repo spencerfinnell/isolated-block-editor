@@ -65,6 +65,7 @@ const reducer = function () {
   return state;
 };
 export default undoable(reducer, {
-  groupBy
+  groupBy,
+  ignoreInitialState: true
 });
 //# sourceMappingURL=reducer.js.map

@@ -10,7 +10,7 @@ import isPromise from 'is-promise';
 import { Popover } from '@wordpress/components';
 import { withDispatch, withSelect } from '@wordpress/data';
 import { compose } from '@wordpress/compose';
-import { useEffect } from '@wordpress/element';
+import { useLayoutEffect } from '@wordpress/element';
 import { parse, rawHandler } from '@wordpress/blocks';
 
 /**
@@ -63,6 +63,7 @@ async function getInitialContent(settings, loader) {
  * @param {OnMore} props.renderMoreMenu - Callback to render additional items in the more menu
  * @param {OnSelection} props.selection
  * @param {OnLoad} props.onLoad - Load initial blocks
+ * @param {*} props.clearHistory - Callback to clear history
  */
 
 function BlockEditorContents(props) {
@@ -71,6 +72,7 @@ function BlockEditorContents(props) {
     onInput,
     onChange,
     selection,
+    clearHistory,
     isEditing,
     editorMode
   } = props;
@@ -82,7 +84,7 @@ function BlockEditorContents(props) {
   } = props;
 
   // Set initial content, if we have any, but only if there is no existing data in the editor (from elsewhere)
-  useEffect(() => {
+  useLayoutEffect(() => {
     const loadData = async () => {
       const initialContent = await getInitialContent(settings, onLoad);
       if (initialContent.length > 0 && (!blocks || blocks.length === 0)) {
@@ -90,6 +92,7 @@ function BlockEditorContents(props) {
           isInitialContent: true
         });
       }
+      clearHistory();
     };
     loadData();
   }, []);
@@ -128,7 +131,8 @@ export default compose([withSelect((select, ownProps) => {
 }), withDispatch((dispatch, ownProps) => {
   const {
     updateBlocksWithUndo,
-    updateBlocksWithoutUndo
+    updateBlocksWithoutUndo,
+    clearHistory
   } = dispatch('isolated/editor');
   const {
     onInput,
@@ -139,16 +143,17 @@ export default compose([withSelect((select, ownProps) => {
       for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
         args[_key] = arguments[_key];
       }
-      onChange === null || onChange === void 0 ? void 0 : onChange(...args);
+      onChange?.(...args);
       updateBlocksWithUndo(...args);
     },
     onInput: function () {
       for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
         args[_key2] = arguments[_key2];
       }
-      onInput === null || onInput === void 0 ? void 0 : onInput(...args);
+      onInput?.(...args);
       updateBlocksWithoutUndo(...args);
-    }
+    },
+    clearHistory
   };
 })])(BlockEditorContents);
 //# sourceMappingURL=index.js.map

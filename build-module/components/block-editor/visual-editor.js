@@ -181,26 +181,28 @@ export default function VisualEditor(_ref2) {
   }, [isTemplateMode, themeSupportsLayout, globalLayoutSettings]);
   const newestPostContentAttributes = useMemo(() => {
     // @ts-ignore
-    if (!(editedPostTemplate !== null && editedPostTemplate !== void 0 && editedPostTemplate.content) && !(editedPostTemplate !== null && editedPostTemplate !== void 0 && editedPostTemplate.blocks)) {
+    if (!editedPostTemplate?.content && !editedPostTemplate?.blocks) {
       return postContentAttributes;
     }
     // When in template editing mode, we can access the blocks directly.
     // @ts-ignore
-    if (editedPostTemplate !== null && editedPostTemplate !== void 0 && editedPostTemplate.blocks) {
+    if (editedPostTemplate?.blocks) {
       // @ts-ignore
-      return getPostContentAttributes(editedPostTemplate === null || editedPostTemplate === void 0 ? void 0 : editedPostTemplate.blocks);
+      return getPostContentAttributes(editedPostTemplate?.blocks);
     }
     // If there are no blocks, we have to parse the content string.
     // Best double-check it's a string otherwise the parse function gets unhappy.
     // @ts-ignore
-    const parseableContent = typeof (editedPostTemplate === null || editedPostTemplate === void 0 ? void 0 : editedPostTemplate.content) === 'string' ? editedPostTemplate === null || editedPostTemplate === void 0 ? void 0 : editedPostTemplate.content : '';
+    const parseableContent = typeof editedPostTemplate?.content === 'string' ? editedPostTemplate?.content : '';
 
     // @ts-ignore
     return getPostContentAttributes(parse(parseableContent)) || {};
-  }, [// @ts-ignore
-  editedPostTemplate === null || editedPostTemplate === void 0 ? void 0 : editedPostTemplate.content, // @ts-ignore
-  editedPostTemplate === null || editedPostTemplate === void 0 ? void 0 : editedPostTemplate.blocks, postContentAttributes]);
-  const layout = (newestPostContentAttributes === null || newestPostContentAttributes === void 0 ? void 0 : newestPostContentAttributes.layout) || {};
+  }, [
+  // @ts-ignore
+  editedPostTemplate?.content,
+  // @ts-ignore
+  editedPostTemplate?.blocks, postContentAttributes]);
+  const layout = newestPostContentAttributes?.layout || {};
   const postContentLayoutClasses = useLayoutClasses(newestPostContentAttributes, 'core/post-content');
   const blockListLayoutClass = classnames({
     'is-layout-flow': !themeSupportsLayout
@@ -209,7 +211,7 @@ export default function VisualEditor(_ref2) {
 
   // Update type for blocks using legacy layouts.
   const postContentLayout = useMemo(() => {
-    return layout && ((layout === null || layout === void 0 ? void 0 : layout.type) === 'constrained' || layout !== null && layout !== void 0 && layout.inherit || layout !== null && layout !== void 0 && layout.contentSize || layout !== null && layout !== void 0 && layout.wideSize) ? {
+    return layout && (layout?.type === 'constrained' || layout?.inherit || layout?.contentSize || layout?.wideSize) ? {
       ...globalLayoutSettings,
       ...layout,
       type: 'constrained'
@@ -218,19 +220,18 @@ export default function VisualEditor(_ref2) {
       ...layout,
       type: 'default'
     };
-  }, [layout === null || layout === void 0 ? void 0 : layout.type, layout === null || layout === void 0 ? void 0 : layout.inherit, layout === null || layout === void 0 ? void 0 : layout.contentSize, layout === null || layout === void 0 ? void 0 : layout.wideSize, globalLayoutSettings]);
+  }, [layout?.type, layout?.inherit, layout?.contentSize, layout?.wideSize, globalLayoutSettings]);
 
   // If there is a Post Content block we use its layout for the block list;
   // if not, this must be a classic theme, in which case we use the fallback layout.
   const blockListLayout = postContentAttributes ? postContentLayout : fallbackLayout;
   const titleRef = useRef();
   useEffect(() => {
-    var _titleRef$current;
     if (isWelcomeGuideVisible || !isCleanNewPost()) {
       return;
     }
     // @ts-ignore
-    titleRef === null || titleRef === void 0 ? void 0 : (_titleRef$current = titleRef.current) === null || _titleRef$current === void 0 ? void 0 : _titleRef$current.focus();
+    titleRef?.current?.focus();
   }, [isWelcomeGuideVisible, isCleanNewPost]);
   styles = useMemo(() => [...styles, {
     // We should move this in to future to the body.
@@ -259,11 +260,11 @@ export default function VisualEditor(_ref2) {
   }, themeSupportsLayout && !themeHasDisabledLayoutStyles && !isTemplateMode && createElement(Fragment, null, createElement(LayoutStyle, {
     selector: ".edit-post-visual-editor__post-title-wrapper, .block-editor-block-list__layout.is-root-container",
     layout: fallbackLayout,
-    layoutDefinitions: globalLayoutSettings === null || globalLayoutSettings === void 0 ? void 0 : globalLayoutSettings.definitions
+    layoutDefinitions: globalLayoutSettings?.definitions
   }), postContentLayoutStyles && createElement(LayoutStyle, {
     layout: postContentLayout,
     css: postContentLayoutStyles,
-    layoutDefinitions: globalLayoutSettings === null || globalLayoutSettings === void 0 ? void 0 : globalLayoutSettings.definitions
+    layoutDefinitions: globalLayoutSettings?.definitions
   })), createElement(EditorHeading.Slot, {
     mode: "visual"
   }), createElement(RecursionProvider, {

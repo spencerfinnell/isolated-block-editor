@@ -232,7 +232,6 @@ export function commentsDocToArray(commentsDoc) {
  */
 // @ts-ignore
 export function blocksDocToArray(yDocBlocks) {
-  var _order$get;
   let {
     clientId = '',
     sanitize = false
@@ -241,7 +240,7 @@ export function blocksDocToArray(yDocBlocks) {
     return [];
   }
   let order = yDocBlocks.get('order');
-  order = (_order$get = order.get(clientId)) === null || _order$get === void 0 ? void 0 : _order$get.toArray();
+  order = order.get(clientId)?.toArray();
   if (!order) return [];
   const byClientId = yDocBlocks.get('byClientId');
   return order.map(_clientId => {

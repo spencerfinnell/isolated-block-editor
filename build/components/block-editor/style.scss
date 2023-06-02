@@ -5,7 +5,7 @@
 .iso-editor {
 	// Restrict the interface skeleton to our container, and not assume it's own a WP admin page
 	.edit-post-layout.interface-interface-skeleton {
-		position: static;
+		position: relative;
 		top:auto;
 		left: auto;
 	}
@@ -20,13 +20,6 @@
 		margin-right: 0;
 		margin-bottom: 0;
 		padding: 16px 24px 96px;
-	}
-
-	// Set the font for the editor
-	.block-editor-writing-flow {
-		font-family: $default-font;
-		font-size: $editor-font-size;
-		line-height: $editor-line-height;
 	}
 
 	.block-editor-writing-flow .block-editor-block-list__layout .wp-block:first-child[data-type='core/paragraph'] {

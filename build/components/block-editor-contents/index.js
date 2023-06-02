@@ -61,6 +61,7 @@ function getInitialContent(_x, _x2) {
  * @param {OnMore} props.renderMoreMenu - Callback to render additional items in the more menu
  * @param {OnSelection} props.selection
  * @param {OnLoad} props.onLoad - Load initial blocks
+ * @param {*} props.clearHistory - Callback to clear history
  */
 function _getInitialContent() {
   _getInitialContent = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(settings, loader) {
@@ -87,6 +88,7 @@ function BlockEditorContents(props) {
     onInput = props.onInput,
     onChange = props.onChange,
     selection = props.selection,
+    clearHistory = props.clearHistory,
     isEditing = props.isEditing,
     editorMode = props.editorMode;
   var children = props.children,
@@ -95,7 +97,7 @@ function BlockEditorContents(props) {
     onLoad = props.onLoad;
 
   // Set initial content, if we have any, but only if there is no existing data in the editor (from elsewhere)
-  (0, _element.useEffect)(function () {
+  (0, _element.useLayoutEffect)(function () {
     var loadData = /*#__PURE__*/function () {
       var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee() {
         var initialContent;
@@ -111,7 +113,8 @@ function BlockEditorContents(props) {
                   isInitialContent: true
                 });
               }
-            case 4:
+              clearHistory();
+            case 5:
             case "end":
               return _context.stop();
           }
@@ -157,7 +160,8 @@ var _default = (0, _compose.compose)([(0, _data.withSelect)(function (select, ow
 }), (0, _data.withDispatch)(function (dispatch, ownProps) {
   var _dispatch = dispatch('isolated/editor'),
     updateBlocksWithUndo = _dispatch.updateBlocksWithUndo,
-    updateBlocksWithoutUndo = _dispatch.updateBlocksWithoutUndo;
+    updateBlocksWithoutUndo = _dispatch.updateBlocksWithoutUndo,
+    clearHistory = _dispatch.clearHistory;
   var _onInput = ownProps.onInput,
     _onChange = ownProps.onChange;
   return {
@@ -174,7 +178,8 @@ var _default = (0, _compose.compose)([(0, _data.withSelect)(function (select, ow
       }
       _onInput === null || _onInput === void 0 ? void 0 : _onInput.apply(void 0, args);
       updateBlocksWithoutUndo.apply(void 0, args);
-    }
+    },
+    clearHistory: clearHistory
   };
 })])(BlockEditorContents);
 exports["default"] = _default;

@@ -33,7 +33,7 @@ export function CollaborativeEditingAvatars(_ref) {
     peer: peer,
     onAvatarClick: onAvatarClick
   })), shouldOverflow && createElement(CollaborativeEditingAvatarsOverflow, {
-    peers: peers === null || peers === void 0 ? void 0 : peers.slice(actualAvatarCount)
+    peers: peers?.slice(actualAvatarCount)
   }));
 }
 export function CollaborativeEditingAvatar(_ref2) {
@@ -109,8 +109,7 @@ export default compose([withSelect(select => {
   } = dispatch('core/block-editor');
   return {
     onAvatarClick(peer) {
-      var _peer$start;
-      if (peer !== null && peer !== void 0 && (_peer$start = peer.start) !== null && _peer$start !== void 0 && _peer$start.clientId) {
+      if (peer?.start?.clientId) {
         selectBlock(peer.start.clientId);
       }
     }

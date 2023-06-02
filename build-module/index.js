@@ -256,7 +256,7 @@ function IsolatedBlockEditor(props) {
     end: select('core/block-editor').getSelectionEnd()
   }), []);
   useEffect(() => {
-    __experimentalOnSelection === null || __experimentalOnSelection === void 0 ? void 0 : __experimentalOnSelection(editorSelection);
+    __experimentalOnSelection?.(editorSelection);
   }, [editorSelection]);
   return createElement(StrictMode, null, createElement(ShortcutProvider, null, createElement(ContentSaver, {
     onSaveBlocks: onSaveBlocks,

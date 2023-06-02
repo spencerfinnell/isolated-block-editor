@@ -24,7 +24,6 @@ import OptionToggle from '../toggle-option';
  * @param {BlockEditorSettings} props.settings - Settings
  */
 function WritingMenu(_ref) {
-  var _settings$iso;
   let {
     onClose,
     settings
@@ -33,7 +32,7 @@ function WritingMenu(_ref) {
     preview,
     fullscreen,
     topToolbar
-  } = (settings === null || settings === void 0 ? void 0 : (_settings$iso = settings.iso) === null || _settings$iso === void 0 ? void 0 : _settings$iso.moreMenu) || {};
+  } = settings?.iso?.moreMenu || {};
   const {
     isFullscreen
   } = useSelect(select => ({

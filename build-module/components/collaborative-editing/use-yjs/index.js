@@ -184,7 +184,7 @@ export default function useYjs(_ref2) {
     };
   }, []);
   useEffect(() => {
-    if (!(settings !== null && settings !== void 0 && settings.enabled)) {
+    if (!settings?.enabled) {
       return;
     }
     if (!settings.transport) {

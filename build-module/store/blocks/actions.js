@@ -9,19 +9,8 @@ const actions = {
   *redo() {
     return yield ActionCreators.redo();
   },
-  /**
-   * Update blocks without undo history
-   *
-   * @param {object[]} blocks
-   * @param {Object} options
-   */
-  *updateBlocksWithUndo(blocks) {
-    let options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-    return yield {
-      type: 'UPDATE_BLOCKS_WITH_UNDO',
-      blocks,
-      ...options
-    };
+  *clearHistory() {
+    return yield ActionCreators.clearHistory();
   },
   /**
    * Update blocks without undo history
@@ -29,13 +18,31 @@ const actions = {
    * @param {object[]} blocks
    * @param {Object} options
    */
-  *updateBlocksWithoutUndo(blocks) {
+  updateBlocksWithUndo(blocks) {
     let options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-    return yield {
-      type: 'UPDATE_BLOCKS_WITHOUT_UNDO',
-      blocks,
-      ...options
-    };
+    return function* () {
+      return yield {
+        type: 'UPDATE_BLOCKS_WITH_UNDO',
+        blocks,
+        ...options
+      };
+    }();
+  },
+  /**
+   * Update blocks without undo history
+   *
+   * @param {object[]} blocks
+   * @param {Object} options
+   */
+  updateBlocksWithoutUndo(blocks) {
+    let options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    return function* () {
+      return yield {
+        type: 'UPDATE_BLOCKS_WITHOUT_UNDO',
+        blocks,
+        ...options
+      };
+    }();
   }
 };
 export default actions;

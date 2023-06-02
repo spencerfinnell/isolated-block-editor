@@ -132,7 +132,6 @@ function prepareReplacementsForTransaction(a, b) {
  * @param {Object} [richTextOpts] Optional options object to pass @wordpress/rich-text create().
  */
 export function applyHTMLDelta(htmlA, htmlB, richTextMap) {
-  var _richTextMap$doc;
   let richTextOpts = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
   const [multilineTagA, multilineTagB] = [htmlA, htmlB].map(getInferredMultilineTag);
   const inferredMultilineTag = multilineTagA || multilineTagB;
@@ -158,7 +157,7 @@ export function applyHTMLDelta(htmlA, htmlB, richTextMap) {
   // By default, a Yjs string insertion will inherit the formats of the previous character.
   // We need to prevent this by inserting with an explicit format object nullifying the previous formats.
   const previousCharFormats = b.formats[stringDiff.index - 1];
-  const nullifierFormat = previousCharFormats === null || previousCharFormats === void 0 ? void 0 : previousCharFormats.reduce((acc, _ref2) => {
+  const nullifierFormat = previousCharFormats?.reduce((acc, _ref2) => {
     let {
       type
     } = _ref2;
@@ -171,7 +170,7 @@ export function applyHTMLDelta(htmlA, htmlB, richTextMap) {
     multilineWrapperReplacements,
     replacementsDiff
   } = prepareReplacementsForTransaction(a.replacements, b.replacements);
-  (_richTextMap$doc = richTextMap.doc) === null || _richTextMap$doc === void 0 ? void 0 : _richTextMap$doc.transact(() => {
+  richTextMap.doc?.transact(() => {
     richTextMap.get('xmlText').delete(stringDiff.index, stringDiff.remove);
     richTextMap.get('xmlText').insert(stringDiff.index, stringDiff.insert, nullifierFormat);
     const yfa = gutenFormatsToYFormats(a.formats);

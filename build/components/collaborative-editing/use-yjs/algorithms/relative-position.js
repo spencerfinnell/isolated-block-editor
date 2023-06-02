@@ -114,16 +114,15 @@ var RelativePosition = /*#__PURE__*/function () {
 exports.RelativePosition = RelativePosition;
 var PeerRelativePosition = /*#__PURE__*/function () {
   /**
-   * @private
-   * @type {RelativePosition[]}
-   */
-
-  /**
    * @param {() => Record<string, Partial<SelectionRange>>} getPeers
    * @param {(peerId: string, selection: SelectionRange) => void} setPeerSelection
    */
   function PeerRelativePosition(getPeers, setPeerSelection) {
     (0, _classCallCheck2["default"])(this, PeerRelativePosition);
+    /**
+     * @private
+     * @type {RelativePosition[]}
+     */
     (0, _defineProperty2["default"])(this, "_peerRelativePositions", []);
     /** @private */
     this._getPeers = getPeers;

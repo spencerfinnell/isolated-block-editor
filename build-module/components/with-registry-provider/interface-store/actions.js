@@ -78,7 +78,7 @@ export const pinItem = (scope, item) => _ref3 => {
   const pinnedItems = registry.select(preferencesStore).get(scope, 'pinnedItems');
 
   // The item is already pinned, there's nothing to do.
-  if ((pinnedItems === null || pinnedItems === void 0 ? void 0 : pinnedItems[item]) === true) {
+  if (pinnedItems?.[item] === true) {
     return;
   }
   registry.dispatch(preferencesStore).set(scope, 'pinnedItems', {

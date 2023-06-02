@@ -71,7 +71,8 @@ var reducer = function reducer() {
   return state;
 };
 var _default = (0, _reduxUndo["default"])(reducer, {
-  groupBy: groupBy
+  groupBy: groupBy,
+  ignoreInitialState: true
 });
 exports["default"] = _default;
 //# sourceMappingURL=reducer.js.map
